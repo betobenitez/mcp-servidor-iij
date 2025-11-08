@@ -3,28 +3,26 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Ruta simple de prueba
 @app.route("/", methods=["GET"])
 def index():
+    # Ruta básica para probar que el servidor está vivo
     return "Servidor MCP en funcionamiento", 200
 
-# Ruta que usará ChatGPT como MCP: /sse
 @app.route("/sse", methods=["POST"])
 def mcp_sse():
-    # El cuerpo de la petición que envíe ChatGPT llegará como JSON
+    # Leer el JSON enviado por el cliente (ChatGPT u otro)
     data = request.get_json(silent=True) or {}
 
-    # Aquí, en el futuro, tú interpretarías 'data' y llamarías a IIJ, SCJN, Scribd, etc.
-    # Por ahora devolvemos una respuesta de ejemplo para probar que todo funciona.
+    # Respuesta mínima de prueba
     respuesta = {
         "ok": True,
-        "mensaje": "Respuesta de ejemplo desde el servidor MCP",
+        "mensaje": "Respuesta de ejemplo desde el servidor MCP (Render)",
         "eco": data
     }
 
     return jsonify(respuesta), 200
 
 if __name__ == "__main__":
-    # Railway asigna el puerto en la variable de entorno PORT
-    port = int(os.environ.get("PORT", 8080))
+    # Render establece PORT en una variable de entorno
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
